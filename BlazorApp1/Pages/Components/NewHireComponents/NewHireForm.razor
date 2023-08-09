@@ -1,0 +1,37 @@
+﻿@page "/NewHire/Add"
+@page "/NewHire/Edit/Id/{Id:long}"
+
+@if(Id == 0)
+{
+    <h3>@AddTitle</h3>
+}
+else
+{
+    <h3>@EditTitle</h3>
+}
+
+@code {
+
+    [Parameter]
+    public long Id { get; set; }
+    public NewHire newHire = new();
+    public string AddTitle = "Add New Hire";
+    public string EditTitle = "Edit New Hire Information";
+
+    protected async Task SaveNewHire()
+    {
+        if(Id == 0)
+        {
+            // create
+        }
+        else if(Id> 0)
+        {
+            // edit
+        }
+    }
+
+    public void Cancel()
+    {
+        _nav.NavigateTo("/");
+    }
+}

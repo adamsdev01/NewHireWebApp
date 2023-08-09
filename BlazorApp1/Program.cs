@@ -1,6 +1,8 @@
 using BlazorApp1.Data;
+using BlazorApp1.Data.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1
 {
@@ -13,7 +15,11 @@ namespace BlazorApp1
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddScoped<NewHireService>();
+
+            // Add ConnectionString
+            builder.Services.AddDbContext<DeveloperRosterDBContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 

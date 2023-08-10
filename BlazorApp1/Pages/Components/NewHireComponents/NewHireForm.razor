@@ -10,6 +10,39 @@ else
     <h3>@EditTitle</h3>
 }
 
+<EditForm Model="@newHire" OnValidSubmit="SaveNewHire">
+    <div class="mb-3">
+        <label for="Name" class="form-label">First Name</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="newHire.FirstName" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="Address" class="form-label">Middle Name</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="newHire.MiddleName" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="Cellnumber" class="form-label">Last Name</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="newHire.LastName" />
+        </div>
+    </div>
+    <div class="container">
+        <label>Add Photo</label>
+        <div class="col-md-6">
+            <InputFile OnChange="HandleFileSelected" />
+
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-light" @onclick="Cancel">Cancel</button>
+    </div>
+</EditForm>
+
+
 @code {
 
     [Parameter]
@@ -17,12 +50,39 @@ else
     public NewHire newHire = new();
     public string AddTitle = "Add New Hire";
     public string EditTitle = "Edit New Hire Information";
+    private IBrowserFile selectedFile;
+    private string? fileName;
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+        fileName = selectedFile.Name;
+    }
 
     protected async Task SaveNewHire()
     {
         if(Id == 0)
         {
             // create
+            if (selectedFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await selectedFile.OpenReadStream().CopyToAsync(memoryStream);
+                    var newRecord = new NewHire
+                    {
+                        FirstName = newHire.FirstName,
+                        LastName = newHire.LastName,
+                        MiddleName = newHire.MiddleName,
+                        ImageFileName = fileName,
+                        ImageBytes = memoryStream.ToArray(),
+                        FileType = DetermineFileType(selectedFile.ContentType).ToString()
+                    };
+
+                    _newHireService.AddNewHire(newRecord);
+                    
+                }
+            }
         }
         else if(Id> 0)
         {
@@ -34,4 +94,27 @@ else
     {
         _nav.NavigateTo("/");
     }
+
+    private FileTypeEnum DetermineFileType(string contentType)
+    {
+        // Create a dictionary to map content types to file types
+        Dictionary<string, FileTypeEnum> contentTypeMapping = new Dictionary<string, FileTypeEnum>
+    {
+        { "image/jpeg", FileTypeEnum.Image },
+        { "image/png", FileTypeEnum.Image },
+        { "application/pdf", FileTypeEnum.PDF },
+        // Add more mappings for other file types
+    };
+
+        // Check if the content type exists in the dictionary, otherwise consider it as 'Other'
+        if (contentTypeMapping.TryGetValue(contentType, out var fileType))
+        {
+            return fileType;
+        }
+        else
+        {
+            return FileTypeEnum.Other;
+        }
+    }
+
 }

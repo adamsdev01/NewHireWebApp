@@ -19,9 +19,9 @@ namespace BlazorApp1.Data
             return _repository.GetAll().Where(x => x.IsCurrent == "Y");
         }
 
-        public NewHire GetProductById(int id)
+        public NewHire GetNewHiretById(long Id)
         {
-            return _repository.GetById(id);
+            return _repository.GetById(Id);
         }
 
         public IEnumerable<NewHire> FindNewHires(Expression<Func<NewHire, bool>> predicate)
@@ -44,7 +44,7 @@ namespace BlazorApp1.Data
             _repository.SaveChanges();
         }
 
-        public void DeleteNewHire(int id)
+        public void DeleteNewHire(long id)
         {
             var newHire = _repository.GetById(id);
             if (newHire != null)

@@ -18,25 +18,27 @@ else
     <table class="table table-striped align-middle table-bordered">
         <thead class="table-success">
             <tr>
-                <th>Photo</th>
+                <th>Image</th>
                 <th>Name</th>
-                <th>ACTIONS</th>
+                <th>ACTION(S)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var emp in newHiresList)
             {
                 <tr>
-                    <td width="50px">
-                        <img src="data:image;base64,@Convert.ToBase64String(emp.ImageBytes)" alt="Image" />
+                    <td>
+                        <img src="data:image;base64,@Convert.ToBase64String(emp.ImageBytes)" alt="Image" width="100" height="100" class="img-thumbnail" />
                     </td>
                     <td>@emp.FullName</td>
                     
                     <td>
                         <a href='/NewHire/Edit/Id/@emp.Id' class="btn btn-outline-dark" role="button">
+                            <i class="bi bi-pencil-square"></i>
                             Edit
                         </a>
                         <a href='/NewHire/Delete/Id/@emp.Id' class="btn btn-outline-danger" role="button">
+                            <i class="bi bi-trash"></i>
                             Delete
                         </a>
                     </td>

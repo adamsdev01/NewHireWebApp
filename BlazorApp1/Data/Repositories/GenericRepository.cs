@@ -25,7 +25,7 @@ namespace BlazorApp1.Data.Repositories
             return _dbSet.Where(predicate).AsEnumerable();
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(long id)
         {
             return _dbSet.Find(id);
         }

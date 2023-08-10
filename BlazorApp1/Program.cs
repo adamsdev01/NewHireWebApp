@@ -1,5 +1,6 @@
 using BlazorApp1.Data;
 using BlazorApp1.Data.Models;
+using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ namespace BlazorApp1
 
             // Add ConnectionString
             builder.Services.AddDbContext<DeveloperRosterDBContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddBlazorBootstrap(); //https://getblazorbootstrap.com/docs/getting-started/blazor-server
+
 
 
             var app = builder.Build();

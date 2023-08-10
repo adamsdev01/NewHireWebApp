@@ -16,7 +16,7 @@ namespace BlazorApp1.Data
 
         public IEnumerable<NewHire> GetAllNewHires()
         {
-            return _repository.GetAll();
+            return _repository.GetAll().Where(x => x.IsCurrent == "Y");
         }
 
         public NewHire GetProductById(int id)

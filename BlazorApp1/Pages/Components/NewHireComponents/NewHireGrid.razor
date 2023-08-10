@@ -1,0 +1,59 @@
+﻿@page "/NewHire/Grid"
+
+<h3 style="text-align:center">New Hires</h3>
+
+<div class="col-md-6">
+    <a href='/NewHire/Add' class="btn btn-primary" role="button">
+        <i class="fas fa-user-plus"></i>
+        New Hire
+    </a>
+</div>
+<br />
+@if (newHiresList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped align-middle table-bordered">
+        <thead class="table-success">
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in newHiresList)
+            {
+                <tr>
+                    <td width="50px">
+                        <img src="data:image;base64,@Convert.ToBase64String(emp.ImageBytes)" alt="Image" />
+                    </td>
+                    <td>@emp.FullName</td>
+                    
+                    <td>
+                        <a href='/NewHire/Edit/Id/@emp.Id' class="btn btn-outline-dark" role="button">
+                            Edit
+                        </a>
+                        <a href='/NewHire/Delete/Id/@emp.Id' class="btn btn-outline-danger" role="button">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+
+@code {
+    private IEnumerable<NewHire> newHiresList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        newHiresList =  _newHireService.GetAllNewHires();
+    }
+
+}
